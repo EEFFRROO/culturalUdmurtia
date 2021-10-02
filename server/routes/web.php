@@ -20,3 +20,5 @@ Route::get('/', function () {
 Route::get('/phpinfo', function () {
     return view(phpinfo());
 });
+
+Route::get('/getEventCards', 'App\Http\Controllers\MainController@showCultural');
