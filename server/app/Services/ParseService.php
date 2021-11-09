@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Dto\EventCardDto;
+use App\Enum\Selectors;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ParseService
@@ -18,18 +19,20 @@ class ParseService
     }
 
     /**
+     * @param string $url
      * @return EventCardDto[]
      */
     public function getEventCards(string $url): array
     {
         $crawler = $this->getContent($url);
         $cards = [];
-        $crawler->filter('.entity-cards_item')->each(function (Crawler $item) use (&$cards) {
-            $name = $item->filter('.card-heading_title-link')->text();
-            $address = $item->filter('.card-heading_place')->text();
-            $img = $item->filter('.card-cover_figure')->filter('img')->attr('src');
+        $crawler->filter(Selectors::CARD_ITEM)->each(function (Crawler $item) use (&$cards) {
+            $name = $item->filter(Selectors::CARD_NAME)->text();
+            $address = $item->filter(Selectors::CARD_ADDRESS)->text();
+            $img = $item->filter(Selectors::CARD_FIGURE)->filter('img')->attr('src');
             $cards[] = new EventCardDto($name, $address, $img);
         });
+        $cards['pagination'] = $crawler->filter(Selectors::PAGINATION)->last()->text();
         return $cards;
     }
 }

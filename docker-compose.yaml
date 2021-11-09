@@ -1,7 +1,7 @@
 version: "3.9"
 services:
-  database:
-    container_name: database
+  database-cult:
+    container_name: database-cult
     image: mysql:latest
     command: --default-authentication-plugin=mysql_native_password
     environment:
@@ -13,8 +13,8 @@ services:
       - '4306:3306'
     volumes:
       - mysql:/var/lib/mysql
-  php:
-    container_name: php
+  php-cult:
+    container_name: php-cult
     build:
       context: ./php
     ports:
@@ -22,9 +22,9 @@ services:
     volumes:
       - ./server:/var/www/app
     depends_on:
-      - database
-  nginx:
-    container_name: nginx
+      - database-cult
+  nginx-cult:
+    container_name: nginx-cult
     image: nginx:stable-alpine
     ports:
       - '8080:80'
@@ -32,7 +32,7 @@ services:
       - ./server:/var/www/app
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-      - php
-      - database
+      - php-cult
+      - database-cult
 volumes:
   mysql:
