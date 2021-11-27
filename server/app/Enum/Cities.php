@@ -9,4 +9,5 @@ class Cities
     public const SARAPUL = 3;
     public const MOZHGA = 4;
     public const VOTKINSK = 5;
+    public const CITIES_COUNT = 5;
 }

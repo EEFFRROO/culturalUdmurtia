@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Dto\EventCardDto;
+
 class CulturalEventsService
 {
     private SelectCityService $selectCityService;
@@ -15,21 +17,25 @@ class CulturalEventsService
 
     /**
      * @param int $cityId
-     * @param int $pageNumber
      * @return array
      */
-    public function getEvents(int $cityId, int $pageNumber): array
+    public function getEvents(int $cityId): array
     {
-        $parseService = new ParseService();
-        $cityLink = $this->selectCityService->getCityLink($cityId) . $pageNumber;
-        $eventCards = $parseService->getEventCards($cityLink);
+        $cityName = $this->selectCityService->getCityName($cityId);
+        $eventCards = $this->databaseService->getEventsByCity($cityName);
         $result = [];
-        $result['pagination'] = $eventCards['pagination'];
-        unset($eventCards['pagination']);
-        $this->databaseService->insertEventCards($eventCards);
         foreach ($eventCards as $eventCard) {
             $result[] = $eventCard->getAll();
         }
         return $result;
+    }
+
+    /**
+     * @param int $eventId
+     * @return array|null
+     */
+    public function getEventInfo(int $eventId): ?array
+    {
+        return $this->databaseService->getEventInfo($eventId)->getAll();
     }
 }

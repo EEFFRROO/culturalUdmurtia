@@ -13,6 +13,7 @@ class EventCard extends Model
 
     protected $fillable = [
         'name',
+        'city',
         'address',
         'img',
         'link'

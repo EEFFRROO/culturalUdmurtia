@@ -16,6 +16,7 @@ class CreateEventCardsTable extends Migration
         Schema::create('event_cards', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('city');
             $table->string('address');
             $table->string('img');
             $table->string('link');

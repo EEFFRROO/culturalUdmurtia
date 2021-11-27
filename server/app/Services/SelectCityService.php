@@ -18,4 +18,16 @@ class SelectCityService
             default => Links::MAIN_SITE,
         };
     }
+
+    public function getCityName(int $cityId): string
+    {
+        return match ($cityId) {
+            Cities::IZHEVSK => 'IZHEVSK',
+            Cities::GLAZOV => 'GLAZOV',
+            Cities::SARAPUL => 'SARAPUL',
+            Cities::MOZHGA => 'MOZHGA',
+            Cities::VOTKINSK => 'VOTKINSK',
+            default => 'NONE',
+        };
+    }
 }

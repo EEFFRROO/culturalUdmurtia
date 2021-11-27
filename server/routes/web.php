@@ -21,4 +21,6 @@ Route::get('/phpinfo', function () {
     return view(phpinfo());
 });
 
-Route::get('/getCityMainPage/{cityId}/{page}', 'App\Http\Controllers\MainController@showCultural');
+Route::get('/getEventsByCity/{cityId}', 'App\Http\Controllers\MainController@showCultural');
+
+Route::get('/getEventInfo/{eventId}', 'App\Http\Controllers\MainController@showEventInfo');
