@@ -25,3 +25,8 @@ php artisan parse:events
 npm install
 ```
 
+Можно настроить cron на парсинг ежедневный парсинг ночью(или чаще, по желанию):
+```shell
+0 0 * * * php artisan parse:events
+```
+
