@@ -1,44 +1,37 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import EventCard from "./EventCard";
+import SelectCityButton from "./SelectCityButton";
 
 /* An example React component */
-class Main extends Component {
-    constructor() {
-        super();
-        this.state = {
-            events: []
-        }
-    }
+function Main() {
+    const [events, setEvents] = React.useState([])
+    const [city, setCity] = React.useState(1)
 
-    componentDidMount() {
-        fetch('/getEventsByCity/1')
+    React.useEffect(() => {
+        fetch('/getEventsByCity/' + city)
             .then(response => {
                 return response.json()
             })
             .then(events => {
-                this.setState({ events })
+                setEvents(events)
             })
-    }
+    })
 
-    renderEvents() {
-        return this.state.events.map(event => {
-            return (
-                <li key={event.id}>
-                    { event.name }
-                </li>
-            )
-        })
-    }
-
-    render() {
-        return (
+    return (
+        <div>
             <div>
-                <ul>
-                    { this.renderEvents() }
-                </ul>
+                <SelectCityButton onCityChange={setCity}/>
             </div>
-        );
-    }
+            <div>
+                { events.map(event => {
+                    return (
+                        <EventCard event={event}/>
+                    )
+                })}
+            </div>
+        </div>
+    );
 }
 
 export default Main;

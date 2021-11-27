@@ -36,7 +36,8 @@ class ParseService
             $crawler->filter(Selectors::CARD_ITEM)->each(function (Crawler $item) use ($cityName, &$cards) {
                 $name = $item->filter(Selectors::CARD_NAME)->text();
                 $address = $item->filter(Selectors::CARD_ADDRESS)->text();
-                $img = $item->filter(Selectors::CARD_FIGURE)->filter('img')->attr('src');
+                $img = $item->filter('.thumbnail_img')->attr('src');
+                $img = preg_replace('/t_average.+.png/', '', $img);
                 $link = $item->filter(Selectors::CARD_LINK)->attr('href');
                 $card = new EventCardDto($name, $cityName, $address, $img, $link);
                 $additionalInfo = $this->getEventFullInfo($link);
