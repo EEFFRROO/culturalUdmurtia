@@ -24,4 +24,8 @@ class Selectors
      * Класс пагинации
      */
     public const PAGINATION = '.pagination_item';
+    /**
+     * Класс ссылки на подробности
+     */
+    public const CARD_LINK = '.card-cover';
 }

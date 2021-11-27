@@ -30,7 +30,8 @@ class ParseService
             $name = $item->filter(Selectors::CARD_NAME)->text();
             $address = $item->filter(Selectors::CARD_ADDRESS)->text();
             $img = $item->filter(Selectors::CARD_FIGURE)->filter('img')->attr('src');
-            $cards[] = new EventCardDto($name, $address, $img);
+            $link = $item->filter(Selectors::CARD_LINK)->attr('href');
+            $cards[] = new EventCardDto($name, $address, $img, $link);
         });
         $cards['pagination'] = $crawler->filter(Selectors::PAGINATION)->last()->text();
         return $cards;

@@ -16,17 +16,23 @@ class EventCardDto
      * @var string
      */
     private string $img;
+    /**
+     * @var string
+     */
+    private string $link;
 
     /**
      * @param string $name
      * @param string $address
      * @param string $img
+     * @param string $link
      */
-    public function __construct(string $name, string $address, string $img)
+    public function __construct(string $name, string $address, string $img, string $link)
     {
         $this->name = $name;
         $this->address = $address;
         $this->img = $img;
+        $this->img = $link;
     }
 
     /**
@@ -78,6 +84,22 @@ class EventCardDto
     }
 
     /**
+     * @return string
+     */
+    public function getLink(): string
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param string $link
+     */
+    public function setLink(string $link): void
+    {
+        $this->link = $link;
+    }
+
+    /**
      * @return array
      */
     public function getAll(): array
@@ -85,7 +107,8 @@ class EventCardDto
         return [
             $this->name,
             $this->address,
-            $this->img
+            $this->img,
+            $this->link,
         ];
     }
 }
