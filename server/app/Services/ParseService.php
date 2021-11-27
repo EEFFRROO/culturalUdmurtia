@@ -3,11 +3,15 @@
 namespace App\Services;
 
 use App\Dto\EventCardDto;
+use App\Enum\Links;
 use App\Enum\Selectors;
 use Symfony\Component\DomCrawler\Crawler;
 
 class ParseService
 {
+    private const FIRST_PAGE = 1;
+    private const DEFAULT_COUNT_OF_PAGES = 1;
+
     /**
      * @param string $url
      * @return Crawler
@@ -25,9 +29,8 @@ class ParseService
      */
     public function getEventCardsByCity(string $cityName, string $url): array
     {
-        $firstPage = 1;
-        $crawler = $this->getContent($url . $firstPage);
-        $countOfPages = $crawler->filter(Selectors::PAGINATION)->last()->text(1);
+        $crawler = $this->getContent($url . self::FIRST_PAGE);
+        $countOfPages = $crawler->filter(Selectors::PAGINATION)->last()->text(self::DEFAULT_COUNT_OF_PAGES);
         $cards = [];
         for ($i = 1; $i <= $countOfPages; $i++) {
             $crawler->filter(Selectors::CARD_ITEM)->each(function (Crawler $item) use ($cityName, &$cards) {
@@ -35,10 +38,34 @@ class ParseService
                 $address = $item->filter(Selectors::CARD_ADDRESS)->text();
                 $img = $item->filter(Selectors::CARD_FIGURE)->filter('img')->attr('src');
                 $link = $item->filter(Selectors::CARD_LINK)->attr('href');
-                $cards[] = new EventCardDto($name, $cityName, $address, $img, $link);
+                $card = new EventCardDto($name, $cityName, $address, $img, $link);
+                $additionalInfo = $this->getEventFullInfo($link);
+                $card->setAttributes($additionalInfo['attributes']);
+                $card->setDescription($additionalInfo['description']);
+                $cards[] = $card;
             });
             $crawler = $this->getContent($url . ($i + 1));
         }
         return $cards;
+    }
+
+    /**
+     * @param string $url
+     * @return array
+     */
+    private function getEventFullInfo(string $url): array
+    {
+        $crawler = $this->getContent(Links::MAIN_SITE . $url);
+        $description = '';
+        $attributes = [];
+        $crawler->filter(Selectors::ATRIBUTES_OF_EVENT)->each(function (Crawler $item) use (&$attributes) {
+            $attributes[] = $item->text();
+        });
+        $textBody = $crawler->filter(Selectors::CONTENT)->filter(Selectors::CONTENT_BODY);
+        $description = $textBody->text();
+        return [
+            'attributes' => implode('   ', $attributes),
+            'description' => $description
+        ];
     }
 }

@@ -28,4 +28,17 @@ class Selectors
      * Класс ссылки на подробности
      */
     public const CARD_LINK = '.card-cover';
+    /**
+     * Класс тела мероприятия
+     */
+    public const CONTENT = '.styled-content';
+    /**
+    /**
+     * Класс тела описания мероприятия
+     */
+    public const CONTENT_BODY = '.styled-content_body';
+    /**
+     * Класс тела описания мероприятия
+     */
+    public const ATRIBUTES_OF_EVENT = '.attributes_value';
 }

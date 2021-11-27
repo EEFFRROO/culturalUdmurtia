@@ -8,11 +8,16 @@ class CulturalEventsService
 {
     private SelectCityService $selectCityService;
     private DatabaseService $databaseService;
+    private ParseService $parseService;
 
-    public function __construct(SelectCityService $selectCityService, DatabaseService $databaseService)
-    {
+    public function __construct(
+        SelectCityService $selectCityService,
+        DatabaseService $databaseService,
+        ParseService $parseService
+    ) {
         $this->selectCityService = $selectCityService;
         $this->databaseService = $databaseService;
+        $this->parseService = $parseService;
     }
 
     /**

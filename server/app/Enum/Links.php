@@ -4,7 +4,7 @@ namespace App\Enum;
 
 class Links
 {
-    public const MAIN_SITE = 'https://www.culture.ru/';
+    public const MAIN_SITE = 'https://www.culture.ru';
     public const IZHEVSK = 'https://www.culture.ru/afisha/izhevsk/?page=';
     public const GLAZOV = 'https://www.culture.ru/afisha/udmurtskaya-respublika-glazov/?page=';
     public const SARAPUL = 'https://www.culture.ru/afisha/udmurtskaya-respublika-sarapul/?page=';

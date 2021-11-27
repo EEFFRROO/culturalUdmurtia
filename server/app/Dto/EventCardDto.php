@@ -28,6 +28,14 @@ class EventCardDto
      * @var string
      */
     private string $link;
+    /**
+     * @var string|null
+     */
+    private ?string $attributes = null;
+    /**
+     * @var string|null
+     */
+    private ?string $description = null;
 
     /**
      * @param string $name
@@ -121,6 +129,8 @@ class EventCardDto
             'address' => $this->address,
             'img' => $this->img,
             'link' => $this->link,
+            'attributes' => $this->attributes,
+            'description' => $this->description,
         ];
     }
 
@@ -154,5 +164,37 @@ class EventCardDto
     public function setId(?int $id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAttributes(): ?string
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @param string|null $attributes
+     */
+    public function setAttributes(?string $attributes): void
+    {
+        $this->attributes = $attributes;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 }

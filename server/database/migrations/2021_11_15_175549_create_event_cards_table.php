@@ -20,6 +20,8 @@ class CreateEventCardsTable extends Migration
             $table->string('address');
             $table->string('img');
             $table->string('link');
+            $table->string('attributes');
+            $table->longText('description');
             $table->unique(['link']);
         });
     }

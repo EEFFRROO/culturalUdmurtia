@@ -14,13 +14,18 @@ class DatabaseService
     public function insertEventCards(array $cards): void
     {
         foreach ($cards as $card) {
-            DB::insert('insert ignore into event_cards (name, city, address, img, link) values (?, ?, ?, ?, ?)', [
-                $card->getName(),
-                $card->getCity(),
-                $card->getAddress(),
-                $card->getImg(),
-                $card->getLink()
-            ]);
+            DB::insert(
+                'insert ignore into event_cards (name, city, address, img, link, attributes, description) values (?, ?, ?, ?, ?, ?, ?)',
+                [
+                    $card->getName(),
+                    $card->getCity(),
+                    $card->getAddress(),
+                    $card->getImg(),
+                    $card->getLink(),
+                    $card->getAttributes(),
+                    $card->getDescription(),
+                ]
+            );
         }
     }
 
@@ -31,6 +36,7 @@ class DatabaseService
     public function getEventsByCity(string $cityName): array
     {
         $cards = DB::table('event_cards')->where('city', $cityName)->get()->all();
+        $cards = json_decode(json_encode($cards), true);
         $result = [];
         foreach ($cards as $card) {
             $tempCard = new EventCardDto(
@@ -41,6 +47,8 @@ class DatabaseService
                 $card['link'],
             );
             $tempCard->setId($card['id']);
+            $tempCard->setAttributes($card['attributes']);
+            $tempCard->setDescription($card['description']);
             $result[] = $tempCard;
         }
         return $result;
@@ -53,7 +61,7 @@ class DatabaseService
     public function getEventInfo(int $eventId): ?EventCardDto
     {
         $tempCard = null;
-        if ($card = DB::table('event_cards')->where('id', $eventId)->get()->toArray()) {
+        if ($card = DB::table('event_cards')->where('id', $eventId)->get()->all()) {
             $card = current(json_decode(json_encode($card), true));
             $tempCard = new EventCardDto(
                 $card['name'],
@@ -63,6 +71,8 @@ class DatabaseService
                 $card['link'],
             );
             $tempCard->setId($card['id']);
+            $tempCard->setAttributes($card['attributes']);
+            $tempCard->setDescription($card['description']);
         }
         return $tempCard;
     }
