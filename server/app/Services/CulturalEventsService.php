@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Dto\EventCardDto;
+use App\Enum\EventTypes;
 
 class CulturalEventsService
 {
@@ -22,15 +23,17 @@ class CulturalEventsService
 
     /**
      * @param int $cityId
+     * @param int $eventTypeId
      * @return array
      */
-    public function getEvents(int $cityId): array
+    public function getEvents(int $cityId, int $eventTypeId): array
     {
         $cityName = $this->selectCityService->getCityName($cityId);
-        $eventCards = $this->databaseService->getEventsByCity($cityName);
+        $eventTypeName = EventTypes::getStringById($eventTypeId);
+        $eventCards = $this->databaseService->getEventsByCityAndType($cityName, $eventTypeName);
         $result = [];
         foreach ($eventCards as $eventCard) {
-            $result[] = $eventCard->getAll();
+            $result[] = $eventCard->getShortInfo();
         }
         return $result;
     }

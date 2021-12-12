@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\EventTypes;
 use App\Services\CulturalEventsService;
 use App\Enum\Cities;
 use Exception;
@@ -21,10 +22,10 @@ class MainController extends BaseController
      * @param int $pageNumber
      * @return string
      */
-    public function showCultural(int $cityId = Cities::IZHEVSK): string
+    public function showCultural(int $cityId = Cities::IZHEVSK, int $eventType = EventTypes::VISTAVKI_ID): string
     {
         try {
-            $result = $this->culturalEventsService->getEvents($cityId);
+            $result = $this->culturalEventsService->getEvents($cityId, $eventType);
         } catch (Exception $exception) {
             $result = ['message' => $exception->getMessage()];
         }

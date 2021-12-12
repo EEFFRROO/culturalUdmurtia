@@ -39,7 +39,9 @@ class ParseService
                 $img = $item->filter('.thumbnail_img')->attr('src');
                 $img = preg_replace('/t_average.+.png/', '', $img);
                 $link = $item->filter(Selectors::CARD_LINK)->attr('href');
+                $type = $item->filter(Selectors::BOTTOM_INFO_OF_EVENT)->children()->children()->first()->text();
                 $card = new EventCardDto($name, $cityName, $address, $img, $link);
+                $card->setType($type);
                 $additionalInfo = $this->getEventFullInfo($link);
                 $card->setAttributes($additionalInfo['attributes']);
                 $card->setDescription($additionalInfo['description']);
@@ -57,13 +59,12 @@ class ParseService
     private function getEventFullInfo(string $url): array
     {
         $crawler = $this->getContent(Links::MAIN_SITE . $url);
-        $description = '';
         $attributes = [];
         $crawler->filter(Selectors::ATRIBUTES_OF_EVENT)->each(function (Crawler $item) use (&$attributes) {
             $attributes[] = $item->text();
         });
         $textBody = $crawler->filter(Selectors::CONTENT)->filter(Selectors::CONTENT_BODY);
-        $description = $textBody->text();
+        $description = $textBody->text('');
         return [
             'attributes' => implode('   ', $attributes),
             'description' => $description

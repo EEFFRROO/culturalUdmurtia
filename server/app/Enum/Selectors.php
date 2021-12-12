@@ -41,4 +41,12 @@ class Selectors
      * Класс тела описания мероприятия
      */
     public const ATRIBUTES_OF_EVENT = '.attributes_value';
+    /**
+     * Класс нижней части мероприятия
+     */
+    public const BOTTOM_INFO_OF_EVENT = '.card-labels_panel__bottom';
+    /**
+     * Класс типа мероприятия
+     */
+    public const TYPE_OF_EVENT = '.attributes_value';
 }

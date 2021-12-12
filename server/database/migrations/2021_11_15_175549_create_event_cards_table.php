@@ -21,6 +21,7 @@ class CreateEventCardsTable extends Migration
             $table->string('img');
             $table->string('link');
             $table->string('attributes');
+            $table->string('type');
             $table->longText('description');
             $table->unique(['link']);
         });

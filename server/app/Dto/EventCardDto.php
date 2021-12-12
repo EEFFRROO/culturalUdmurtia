@@ -36,6 +36,10 @@ class EventCardDto
      * @var string|null
      */
     private ?string $description = null;
+    /**
+     * @var string|null
+     */
+    private ?string $type = null;
 
     /**
      * @param string $name
@@ -131,6 +135,21 @@ class EventCardDto
             'link' => $this->link,
             'attributes' => $this->attributes,
             'description' => $this->description,
+            'type' => $this->type,
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getShortInfo(): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'img' => $this->img,
+            'attributes' => $this->attributes,
+            'type' => $this->type,
         ];
     }
 
@@ -196,5 +215,21 @@ class EventCardDto
     public function setDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string|null $type
+     */
+    public function setType(?string $type): void
+    {
+        $this->type = $type;
     }
 }

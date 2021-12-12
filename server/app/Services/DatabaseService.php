@@ -15,7 +15,7 @@ class DatabaseService
     {
         foreach ($cards as $card) {
             DB::insert(
-                'insert ignore into event_cards (name, city, address, img, link, attributes, description) values (?, ?, ?, ?, ?, ?, ?)',
+                'insert ignore into event_cards (name, city, address, img, link, attributes, description, type) values (?, ?, ?, ?, ?, ?, ?, ?)',
                 [
                     $card->getName(),
                     $card->getCity(),
@@ -24,6 +24,7 @@ class DatabaseService
                     $card->getLink(),
                     $card->getAttributes(),
                     $card->getDescription(),
+                    $card->getType(),
                 ]
             );
         }
@@ -33,9 +34,13 @@ class DatabaseService
      * @param string $cityName
      * @return EventCardDto[]
      */
-    public function getEventsByCity(string $cityName): array
+    public function getEventsByCityAndType(string $cityName, string $typeName): array
     {
-        $cards = DB::table('event_cards')->where('city', $cityName)->get()->all();
+        $cards = DB::table('event_cards')
+            ->where('city', $cityName)
+            ->where('type', $typeName)
+            ->get()
+            ->all();
         $cards = json_decode(json_encode($cards), true);
         $result = [];
         foreach ($cards as $card) {
@@ -49,6 +54,7 @@ class DatabaseService
             $tempCard->setId($card['id']);
             $tempCard->setAttributes($card['attributes']);
             $tempCard->setDescription($card['description']);
+            $tempCard->setType($card['type']);
             $result[] = $tempCard;
         }
         return $result;
@@ -73,6 +79,7 @@ class DatabaseService
             $tempCard->setId($card['id']);
             $tempCard->setAttributes($card['attributes']);
             $tempCard->setDescription($card['description']);
+            $tempCard->setType($card['type']);
         }
         return $tempCard;
     }

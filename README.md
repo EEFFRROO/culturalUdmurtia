@@ -19,11 +19,17 @@ docker-compose exec php-cult bash
 composer install
 ```
 ```shell
+php artisan migrate
+```
+```shell
 php artisan parse:events
 ```
+###### Выполняется долго(парсится сторонний сайт)
 ```shell
 npm install
 ```
+
+### Сайт открывается на localhost:8080
 
 Можно настроить cron на парсинг ежедневный парсинг ночью(или чаще, по желанию):
 ```shell
