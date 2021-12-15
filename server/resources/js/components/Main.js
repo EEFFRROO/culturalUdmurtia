@@ -10,16 +10,24 @@ function Main() {
     const [events, setEvents] = React.useState([])
     const [city, setCity] = React.useState(1)
     const [eventType, setEventType] = React.useState(1)
+    const [eventId, setEventId] = React.useState(1)
+    const [isVisible, setIsVisible] = React.useState(false)
+
+    const didMount = React.useRef(true);
 
     React.useEffect(() => {
-        fetch('/getEventsByCity/' + city + '/' + eventType)
-            .then(response => {
-                return response.json()
-            })
-            .then(events => {
-                setEvents(events)
-            })
-    })
+        if (didMount.current) {
+            fetch('/getEventsByCity/' + city + '/' + eventType)
+                .then(response => {
+                    return response.json()
+                })
+                .then(events => {
+                    setEvents(events)
+                })
+        } else {
+            didMount.current = true;
+        }
+    }, [city, eventType])
 
     return (
         <div>
@@ -28,11 +36,11 @@ function Main() {
                 <SelectEventTypeButton onEventTypeChange={setEventType}/>
             </div>
             <div>
-                <EventCardInfo></EventCardInfo>
+                <EventCardInfo eventId={ eventId } isVisible={ isVisible } onIsVisibleChange={ setIsVisible }></EventCardInfo>
                 <div className="row">
                     { events.map(event => {
                         return (
-                            <EventCard event={event}/>
+                            <EventCard event={event} onEventIdChange={setEventId} onIsVisibleChange={ setIsVisible }/>
                         )
                     })}
                 </div>
